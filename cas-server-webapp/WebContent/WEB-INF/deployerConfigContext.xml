@@ -90,8 +90,9 @@
     <!-- Required for proxy ticket mechanism. -->
     <bean id="proxyAuthenticationHandler"
           class="org.jasig.cas.authentication.handler.support.HttpBasedServiceCredentialsAuthenticationHandler"
-          p:httpClient-ref="supportsTrustStoreSslSocketFactoryHttpClient"  />
-
+          p:httpClient-ref="supportsTrustStoreSslSocketFactoryHttpClient" 
+          p:requireSecure="false"  /><!-- lwk update1(用http验证) add  p:requireSecure="false" -->
+	
     <!--
        | TODO: Replace this component with one suitable for your enviroment.
        |
@@ -109,6 +110,7 @@
         <property name="users">
             <map>
                 <entry key="casuser" value="Mellon"/>
+                <entry key="test" value="test"/>
             </map>
         </property>
     </bean>
@@ -190,6 +192,11 @@
             -->  
         </bean>
     </util:list>
+    <!-- lwk -->
+    <sec:user-service id="userDetailsService">
+        <sec:user name="test" password="test" authorities="ROLE_ADMIN" />
+    </sec:user-service>
+     <!-- lwk end-->
     
     <bean id="auditTrailManager" class="com.github.inspektr.audit.support.Slf4jLoggingAuditTrailManager" />
     
