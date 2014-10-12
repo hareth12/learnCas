@@ -71,6 +71,7 @@
     <bean id="servicesManager" class="org.jasig.cas.services.DefaultServicesManagerImpl"
         c:serviceRegistryDao-ref="serviceRegistryDao" />
 
+		<!--     定时任务检查 哪些些url是合法的cas登陆  start -->
     <!--
         Job to periodically reload services from service registry.
         This job is needed for a clustered CAS environment since service changes
@@ -85,6 +86,7 @@
           p:jobDetail-ref="serviceRegistryReloaderJobDetail"
           p:startDelay="${service.registry.quartz.reloader.startDelay:120000}"
           p:repeatInterval="${service.registry.quartz.reloader.repeatInterval:120000}"/>
+<!--     定时任务检查 哪些些url是合法的cas登陆  end -->
 
     <bean id="httpClient" class="org.jasig.cas.util.SimpleHttpClient"
           p:readTimeout="5000"
@@ -93,6 +95,7 @@
     <bean id="noRedirectHttpClient" class="org.jasig.cas.util.SimpleHttpClient" parent="httpClient"
           p:followRedirects="false" />
 
+<!-- 持久性ID产生器 -->
     <bean id="persistentIdGenerator"
           class="org.jasig.cas.authentication.principal.ShibbolethCompatiblePersistentIdGenerator"
           p:salt="casrocks"/>
@@ -105,7 +108,7 @@
 
     <bean id="logoutBuilder" class="org.jasig.cas.logout.SamlCompliantLogoutMessageCreator" />
     
-    <!-- CentralAuthenticationService -->
+    <!-- CentralAuthenticationService 中央认证服务 -->
     <bean id="centralAuthenticationService" class="org.jasig.cas.CentralAuthenticationServiceImpl">
         <constructor-arg index="0" ref="ticketRegistry"/>
         <constructor-arg index="1">
@@ -127,14 +130,14 @@
           p:httpClient-ref="httpClient"
           p:uniqueTicketIdGenerator-ref="proxy20TicketUniqueIdGenerator"/>
 
-    <!-- ADVISORS -->
+    <!-- ADVISORS 顾问-->
     <bean id="advisorAutoProxyCreator"
           class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
 
     <bean id="validationAnnotationBeanPostProcessor" class="org.jasig.cas.util.CustomBeanValidationPostProcessor"
             p:afterInitialization="true" />
 
-    <!-- The scheduler bean wires up any triggers that define scheduled tasks -->
+    <!-- The scheduler bean wires up any triggers that define scheduled tasks 调度程序 -->
     <bean id="scheduler" class="org.jasig.cas.util.AutowiringSchedulerFactoryBean"/>
             
 </beans>

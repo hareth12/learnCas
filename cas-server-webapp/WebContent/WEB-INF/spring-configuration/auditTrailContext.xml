@@ -42,7 +42,7 @@
     c:applicationCode="CAS" c:auditablePrincipalResolver-ref="auditablePrincipalResolver" 
     c:auditTrailManagers-ref="auditTrailManager" c:auditActionResolverMap-ref="auditActionResolverMap"
     c:auditResourceResolverMap-ref="auditResourceResolverMap" />
-
+<!-- 审计 -->
   <util:map id="auditActionResolverMap">
     <entry key="AUTHENTICATION_RESOLVER">
       <ref local="authenticationActionResolver" />

@@ -180,7 +180,7 @@
     </property>
   </bean>
   
-  <!--  CAS 2 Protocol service/proxy validation -->     
+  <!--  CAS 2 协议 Protocol service/proxy validation -->     
   <bean id="abstractValidateController" class="org.jasig.cas.web.ServiceValidateController" abstract="true"
         p:centralAuthenticationService-ref="centralAuthenticationService"
         p:proxyHandler-ref="proxy20Handler"
@@ -191,7 +191,7 @@
   <bean id="serviceValidateController" parent="abstractValidateController"
         p:validationSpecificationClass="org.jasig.cas.validation.Cas20WithoutProxyingValidationSpecification"/>
 
-  <!--  CAS 3 Protocol service/proxy validation with attributes -->
+  <!--  CAS 3 协议 Protocol service/proxy validation with attributes -->
   <bean id="v3AbstractValidateController" parent="abstractValidateController" abstract="true"
         p:successView="cas3ServiceSuccessView"
         p:failureView="cas3ServiceFailureView" />
@@ -201,7 +201,7 @@
   <bean id="v3ServiceValidateController" parent="v3AbstractValidateController"
         p:validationSpecificationClass="org.jasig.cas.validation.Cas20WithoutProxyingValidationSpecification"/>
  
-  <!--  CAS 1 legacy validation -->       
+  <!--  CAS 1 遗留 legacy validation -->       
   <bean id="legacyValidateController" parent="abstractValidateController"
         p:proxyHandler-ref="proxy10Handler"
         p:successView="cas1ServiceSuccessView"

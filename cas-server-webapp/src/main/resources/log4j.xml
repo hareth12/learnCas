@@ -102,12 +102,12 @@
     </logger>
 
     <logger name="org.jasig" additivity="true">
-        <level value="INFO" />
+        <level value="DEBUG" />
         <appender-ref ref="cas" />
     </logger>
 
     <logger name="com.github.inspektr.audit.support.Slf4jLoggingAuditTrailManager">
-        <level value="INFO" />
+        <level value="DEBUG" />
         <appender-ref ref="cas" />
     </logger>
 
@@ -126,7 +126,7 @@
       logger to System.out.
     -->
     <root>
-        <level value="ERROR" />
+        <level value="DEBUG" />
         <appender-ref ref="console" />
     </root>
 </log4j:configuration>

@@ -122,6 +122,7 @@ public final class SafeDispatcherServlet extends HttpServlet {
          * HttpServlet API.
          */
         if (this.initSuccess) {
+        	//委派
             this.delegate.service(req, resp);
         } else {
             throw new ApplicationContextException("Unable to initialize application context.");
