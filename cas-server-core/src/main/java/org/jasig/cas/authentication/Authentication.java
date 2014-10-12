@@ -61,7 +61,7 @@ public interface Authentication extends Serializable {
      *
      * @return the date/time the authentication occurred.
      */
-    Date getAuthenticationDate();
+    Date getAuthenticatedDate();
 
     /**
      * Attributes of the authentication (not the Principal).

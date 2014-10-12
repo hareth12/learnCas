@@ -18,36 +18,25 @@
  */
 package org.jasig.cas.services;
 
-import java.io.Serializable;
-import java.net.URL;
+import java.util.Map;
 
 /**
- * Defines the proxying policy for a registered service.
- * While a service may be allowed proxying on a general level,
- * it may still want to restrict who is authorizes to receive
- * the proxy granting ticket. This interface defines the behavior
- * for both options.
- * 
+ * Defines the general contract of the attribute release policy for a registered service.
+ * An instance of this attribute filter may determine how principal/global attributes are translated to a
+ * map of attributes that may be released for a registered service.
+ *
  * @author Misagh Moayyed
- * @since 4.1
+ * @since 4.0.0
  */
-public interface RegisteredServiceProxyPolicy extends Serializable {
-
+public interface RegisteredServiceAttributeFilter {
     /**
-     * Determines whether the service is allowed proxy
-     * capabilities. 
+     * Filters the received principal attributes for the given registered service.
      *
-     * @return true, if is allowed to proxy
+     * @param principalId the principal id for whom attributes are to be released
+     * @param givenAttributes the map for the original given attributes
+     * @param svc the registered service for which attributes are to be released
+     * @return a map that contains the filtered attributes.
      */
-    boolean isAllowedToProxy();
-    
-    /**
-     * Determines if the given proxy callback
-     * url is authorized and allowed to
-     * request proxy access.
-     *
-     * @param pgtUrl the pgt url
-     * @return true, if url allowed.
-     */
-    boolean isAllowedProxyCallbackUrl(URL pgtUrl);
+    Map<String, Object> filter(final String principalId, final Map<String, Object> givenAttributes,
+            final RegisteredService svc);
 }

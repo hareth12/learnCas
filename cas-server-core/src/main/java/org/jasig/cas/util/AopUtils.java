@@ -30,9 +30,6 @@ import org.aspectj.lang.JoinPoint;
  */
 public final class AopUtils {
 
-    /**
-     * Instantiates a new aop utils.
-     */
     private AopUtils() {}
 
     /**

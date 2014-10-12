@@ -18,6 +18,8 @@
  */
 package org.jasig.cas.authentication.handler.support;
 
+import java.security.GeneralSecurityException;
+
 import org.jasig.cas.authentication.AbstractAuthenticationHandler;
 import org.jasig.cas.authentication.Credential;
 import org.jasig.cas.authentication.HandlerResult;
@@ -29,7 +31,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.FailedLoginException;
 import javax.validation.constraints.NotNull;
-import java.security.GeneralSecurityException;
 
 /**
  * Class to validate the credential presented by communicating with the web
@@ -46,6 +47,12 @@ import java.security.GeneralSecurityException;
  */
 public final class HttpBasedServiceCredentialsAuthenticationHandler extends AbstractAuthenticationHandler {
 
+    /** The string representing the HTTPS protocol. */
+    private static final String PROTOCOL_HTTPS = "https";
+
+    /** Boolean variable denoting whether secure connection is required or not. */
+    private boolean requireSecure = true;
+
     /** Log instance. */
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -53,15 +60,12 @@ public final class HttpBasedServiceCredentialsAuthenticationHandler extends Abst
     @NotNull
     private HttpClient httpClient;
 
-    @Override
     public HandlerResult authenticate(final Credential credential) throws GeneralSecurityException {
         final HttpBasedServiceCredential httpCredential = (HttpBasedServiceCredential) credential;
-        if (!httpCredential.getService().getProxyPolicy().isAllowedProxyCallbackUrl(httpCredential.getCallbackUrl())) {
-            logger.warn("Proxy policy for service [{}] cannot authorize the requested callbackurl [{}]",
-                    httpCredential.getService(), httpCredential.getCallbackUrl());
-            throw new FailedLoginException(httpCredential.getCallbackUrl() + " cannot be authorized");
+        if (this.requireSecure && !httpCredential.getCallbackUrl().getProtocol().equals(PROTOCOL_HTTPS)) {
+            logger.debug("Authentication failed because url was not secure.");
+            throw new FailedLoginException(httpCredential.getCallbackUrl() + " is not an HTTPS endpoint as required.");
         }
-
         logger.debug("Attempting to authenticate {}", httpCredential);
         if (!this.httpClient.isValidEndPoint(httpCredential.getCallbackUrl())) {
             throw new FailedLoginException(
@@ -71,11 +75,9 @@ public final class HttpBasedServiceCredentialsAuthenticationHandler extends Abst
     }
 
     /**
-     * {@inheritDoc}
      * @return true if the credential provided are not null and the credential
      * are a subclass of (or equal to) HttpBasedServiceCredential.
      */
-    @Override
     public boolean supports(final Credential credential) {
         return credential instanceof HttpBasedServiceCredential;
     }
@@ -89,14 +91,11 @@ public final class HttpBasedServiceCredentialsAuthenticationHandler extends Abst
     }
 
     /**
-     * @deprecated As of 4.1. Endpoint security is handled by service proxy policies
-     *
-     * <p>Set whether a secure url is required or not.</p>
+     * Set whether a secure url is required or not.
      *
      * @param requireSecure true if its required, false if not. Default is true.
      */
-    @Deprecated
     public void setRequireSecure(final boolean requireSecure) {
-         logger.warn("setRequireSecure() is deprecated and will be removed. Callback url validation is controlled by the proxy policy");
+        this.requireSecure = requireSecure;
     }
 }

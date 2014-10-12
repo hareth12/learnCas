@@ -1,100 +1,91 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<groupId>com.lwk</groupId>
+		<artifactId>cas-server</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.lwk</groupId>
 	<artifactId>cas-server-webapp-support</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<dependencies>
-
-		<dependency>
-			<groupId>com.lwk</groupId>
-			<artifactId>cas-server-core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.lwk</groupId>
-			<artifactId>cas-server-support-generic</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>runtime</scope>
-		</dependency>
-
-
-
 		<dependency>
 			<groupId>com.github.inspektr</groupId>
 			<artifactId>inspektr-support-spring</artifactId>
 			<scope>runtime</scope>
-			<version>1.1.GA</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 			<scope>compile</scope>
-			<version>3.2.5.RELEASE</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
 			<scope>compile</scope>
-			<version>3.2.5.RELEASE</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 			<scope>runtime</scope>
-			<version>3.2.5.RELEASE</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>4.0.6.RELEASE</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.lwk</groupId>
+			<artifactId>cas-server-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
+		<dependency>
+			<groupId>com.lwk</groupId>
+			<artifactId>cas-server-support-generic</artifactId>
+			<version>${project.version}</version>
+			<scope>runtime</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<scope>compile</scope>
-			<version>4.0.6.RELEASE</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-expression</artifactId>
 			<scope>compile</scope>
-			<version>4.0.6.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.opensymphony.quartz</groupId>
+			<artifactId>quartz</artifactId>
+			<version>1.6.1</version>
+			<type>jar</type>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<scope>runtime</scope>
-			<version>4.3.2.Final</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<scope>test</scope>
-			<version>4.3.2.Final</version>
 		</dependency>
 
 
-		<!-- <dependency> <groupId>org.hsqldb</groupId> <artifactId>hsqldb</artifactId> 
-			<scope>test</scope> </dependency> -->
 
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-			<scope>compile</scope>
-			<version>2.2.1</version>
-		</dependency>
+
 	</dependencies>
 
 

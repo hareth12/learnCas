@@ -42,10 +42,5 @@ public interface RandomStringGenerator {
      */
     String getNewString();
 
-    /**
-     * Gets the new string as bytes.
-     *
-     * @return the new random string as bytes
-     */
     byte[] getNewStringAsBytes();
 }

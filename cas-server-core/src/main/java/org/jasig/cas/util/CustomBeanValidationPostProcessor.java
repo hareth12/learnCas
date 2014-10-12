@@ -40,9 +40,6 @@ import javax.validation.Validator;
  */
 public final class CustomBeanValidationPostProcessor extends BeanValidationPostProcessor {
 
-    /**
-     * Instantiates a new custom bean validation post processor.
-     */
     public CustomBeanValidationPostProcessor() {
         final Configuration<?> configuration = Validation.byDefaultProvider().configure();
         configuration.traversableResolver(new TraversableResolver() {

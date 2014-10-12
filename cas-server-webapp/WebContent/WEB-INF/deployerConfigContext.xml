@@ -90,9 +90,8 @@
     <!-- Required for proxy ticket mechanism. -->
     <bean id="proxyAuthenticationHandler"
           class="org.jasig.cas.authentication.handler.support.HttpBasedServiceCredentialsAuthenticationHandler"
-          p:httpClient-ref="supportsTrustStoreSslSocketFactoryHttpClient" 
-          p:requireSecure="false"  /><!-- lwk update1(用http验证) add  p:requireSecure="false" -->
-	
+          p:httpClient-ref="httpClient" p:requireSecure="false" />
+
     <!--
        | TODO: Replace this component with one suitable for your enviroment.
        |
@@ -105,26 +104,18 @@
        | * org.jasig.cas.adaptors.x509.authentication.handler.support.X509CredentialsAuthenticationHandler
        | * org.jasig.cas.support.spnego.authentication.handler.support.JCIFSSpnegoAuthenticationHandler
        -->
-    <bean id="primaryAuthenticationHandler" class="org.jasig.cas.adaptors.jdbc.QueryDatabaseAuthenticationHandler">
-         <property  name="dataSource" ref="dataSource"></property>  
-         <property  name="sql" value="select password from sso_t_user where login_name=?"></property>  
-         <property  name="passwordEncoder" ref="MD5PasswordEncoder"></property>
+    <bean id="primaryAuthenticationHandler"
+          class="org.jasig.cas.authentication.AcceptUsersAuthenticationHandler">
+        <property name="users">
+            <map>
+                <entry key="lwk" value="lwk"/>
+            </map>
+        </property>
     </bean>
-    
-    <bean id="dataSource"   class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>  
-        <property name="url" value="jdbc:mysql://localhost:3306/cas_sso_test"/>  
-        <property name="username" value="root"/>  
-        <property name="password" value="111111"/>  
-	</bean>  
-
-	<bean id="MD5PasswordEncoder"   class="org.jasig.cas.authentication.handler.DefaultPasswordEncoder">  
-	        <constructor-arg index="0" value="MD5" />  
-	</bean>
-    
 
     <!-- Required for proxy ticket mechanism -->
-    <bean id="proxyPrincipalResolver" class="org.jasig.cas.authentication.principal.BasicPrincipalResolver" />
+    <bean id="proxyPrincipalResolver"
+          class="org.jasig.cas.authentication.principal.BasicPrincipalResolver" />
 
     <!--
        | Resolves a principal from a credential using an attribute repository that is configured to resolve
@@ -146,14 +137,6 @@
         <entry key="uid" value="uid" />
         <entry key="eduPersonAffiliation" value="eduPersonAffiliation" /> 
         <entry key="groupMembership" value="groupMembership" />
-        <entry>
-          <key><value>memberOf</value></key>
-          <list>
-              <value>faculty</value>
-              <value>staff</value>
-              <value>org</value>
-          </list>
-      </entry>
     </util:map>
 
     <!-- 
@@ -165,45 +148,29 @@
             p:registeredServices-ref="registeredServicesList" />
 
     <util:list id="registeredServicesList">
-    	<bean class="org.jasig.cas.services.RegexRegisteredService"
-              p:id="0" p:name="Apereo" p:description="Apereo foundation sample service"
-              p:serviceId="^https://www.apereo.org" p:evaluationOrder="0"
-              p:theme="apereo" />
-
         <bean class="org.jasig.cas.services.RegexRegisteredService"
-              p:id="10000001" p:name="HTTPS and IMAPS" p:description="Allows HTTPS and IMAPS protocols"
-              p:serviceId="^(https?|imaps)://.*" p:evaluationOrder="10000001">
-				<!-- lwk -->
-            <!--
-            <property name="proxyPolicy">
-                <bean class="org.jasig.cas.services.RegexMatchingRegisteredServiceProxyPolicy"
-                      c:pgtUrlPattern="^https://.*" />
+              p:id="0" p:name="HTTP and IMAP" p:description="Allows HTTP(S) and IMAP(S) protocols"
+              p:serviceId="^(https?|imaps?)://.*" p:evaluationOrder="10000001" />
+        <!--
+        Use the following definition instead of the above to further restrict access
+        to services within your domain (including sub domains).
+        Note that example.com must be replaced with the domain you wish to permit.
+        This example also demonstrates the configuration of an attribute filter
+        that only allows for attributes whose length is 3.
+        -->
+        <!--
+        <bean class="org.jasig.cas.services.RegexRegisteredService">
+            <property name="id" value="1" />
+            <property name="name" value="HTTP and IMAP on example.com" />
+            <property name="description" value="Allows HTTP(S) and IMAP(S) protocols on example.com" />
+            <property name="serviceId" value="^(https?|imaps?)://([A-Za-z0-9_-]+\.)*example\.com/.*" />
+            <property name="evaluationOrder" value="0" />
+            <property name="attributeFilter">
+              <bean class="org.jasig.cas.services.support.RegisteredServiceRegexAttributeFilter" c:regex="^\w{3}$" /> 
             </property>
-            -->
-
-            <!-- 
-            <property name="attributeReleasePolicy">
-                <bean class="org.jasig.cas.services.ReturnAllowedAttributeReleasePolicy">
-                    <property name="allowedAttributes">
-                        <list>
-                            <value>uid</value>
-                            <value>groupMembership</value>
-                            <value>memberOf</value>
-                        </list>
-                    </property>
-                    <property name="attributeFilter">
-                        <bean class="org.jasig.cas.services.support.RegisteredServiceRegexAttributeFilter" c:regex="^\w{3}$" /> 
-                    </property>
-                </bean>
-            </property>
-            -->  
         </bean>
+        -->
     </util:list>
-    <!-- lwk -->
-    <sec:user-service id="userDetailsService">
-        <sec:user name="test" password="test" authorities="ROLE_ADMIN" />
-    </sec:user-service>
-     <!-- lwk end-->
     
     <bean id="auditTrailManager" class="com.github.inspektr.audit.support.Slf4jLoggingAuditTrailManager" />
     

@@ -18,11 +18,11 @@
  */
 package org.jasig.cas.ticket;
 
-import org.jasig.cas.authentication.Authentication;
-import org.jasig.cas.authentication.principal.Service;
-
 import java.util.List;
 import java.util.Map;
+
+import org.jasig.cas.authentication.Authentication;
+import org.jasig.cas.authentication.principal.Service;
 
 /**
  * Interface for a ticket granting ticket. A TicketGrantingTicket is the main
@@ -35,11 +35,8 @@ import java.util.Map;
  */
 public interface TicketGrantingTicket extends Ticket {
 
-    /** The prefix to use when generating an id for a Ticket Granting Ticket. */
+    /** The prefix to use when generating an id for a TicketGrantingTicket. */
     String PREFIX = "TGT";
-
-    /** The prefix to use when generating an id for a Proxy Granting Ticket. */
-    String PROXY_GRANTING_TICKET_PREFIX = "PGT";
 
     /**
      * Method to retrieve the authentication.

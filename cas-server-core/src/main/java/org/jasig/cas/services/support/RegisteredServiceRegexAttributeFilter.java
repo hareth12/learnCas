@@ -18,7 +18,6 @@
  */
 package org.jasig.cas.services.support;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +26,8 @@ import java.util.regex.Pattern;
 
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.jasig.cas.services.AttributeFilter;
+import org.jasig.cas.services.RegisteredService;
+import org.jasig.cas.services.RegisteredServiceAttributeFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,32 +38,16 @@ import org.slf4j.LoggerFactory;
  * @author Misagh Moayyed
  * @since 4.0.0
  */
-public final class RegisteredServiceRegexAttributeFilter implements AttributeFilter {
-    private static final long serialVersionUID = 403015306984610128L;
-    
+public class RegisteredServiceRegexAttributeFilter implements RegisteredServiceAttributeFilter {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @NotNull
-    private Pattern pattern;
-    
-    /**
-     * Instantiates a new registered service regex attribute filter.
-     *
-     * @param regex the regex
-     */
     public RegisteredServiceRegexAttributeFilter(final String regex) {
         this.pattern = Pattern.compile(regex);
     }
 
-    /**
-     * Gets the pattern.
-     *
-     * @return the pattern
-     */
-    protected Pattern getPattern() {
-        return this.pattern;
-    }
-    
+    @NotNull
+    private Pattern pattern;
+
     /**
      * {@inheritDoc}
      *
@@ -84,7 +66,8 @@ public final class RegisteredServiceRegexAttributeFilter implements AttributeFil
      */
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, Object> filter(final Map<String, Object> givenAttributes) {
+    public Map<String, Object> filter(final String principalId, final Map<String, Object> givenAttributes,
+            final RegisteredService registeredService) {
         final Map<String, Object> attributesToRelease = new HashMap<String, Object>();
         for (final String attributeName : givenAttributes.keySet()) {
             final Object attributeValue = givenAttributes.get(attributeName);
@@ -95,12 +78,12 @@ public final class RegisteredServiceRegexAttributeFilter implements AttributeFil
                     final String[] filteredAttributes = filterArrayAttributes(
                             ((Collection<String>) attributeValue).toArray(new String[] {}), attributeName);
                     if (filteredAttributes.length > 0) {
-                        attributesToRelease.put(attributeName, Arrays.asList(filteredAttributes));
+                        attributesToRelease.put(attributeName, filteredAttributes);
                     }
                 } else if (attributeValue.getClass().isArray()) {
                     final String[] filteredAttributes = filterArrayAttributes((String[]) attributeValue, attributeName);
                     if (filteredAttributes.length > 0) {
-                        attributesToRelease.put(attributeName, Arrays.asList(filteredAttributes));
+                        attributesToRelease.put(attributeName, filteredAttributes);
                     }
                 } else if (attributeValue instanceof Map) {
                     final Map<String, String> filteredAttributes = filterMapAttributes((Map<String, String>) attributeValue);
@@ -119,12 +102,6 @@ public final class RegisteredServiceRegexAttributeFilter implements AttributeFil
         return attributesToRelease;
     }
 
-    /**
-     * Filter map attributes based on the values given.
-     *
-     * @param valuesToFilter the values to filter
-     * @return the map
-     */
     private Map<String, String> filterMapAttributes(final Map<String, String> valuesToFilter) {
         final Map<String, String> attributesToFilter = new HashMap<String, String>(valuesToFilter.size());
         for (final String attributeName : valuesToFilter.keySet()) {
@@ -137,23 +114,10 @@ public final class RegisteredServiceRegexAttributeFilter implements AttributeFil
         return attributesToFilter;
     }
 
-    /**
-     * Determine whether pattern matches attribute value.
-     *
-     * @param value the value
-     * @return true, if successful
-     */
     private boolean patternMatchesAttributeValue(final String value) {
         return this.pattern.matcher(value).matches();
     }
 
-    /**
-     * Filter array attributes.
-     *
-     * @param valuesToFilter the values to filter
-     * @param attributeName the attribute name
-     * @return the string[]
-     */
     private String[] filterArrayAttributes(final String[] valuesToFilter, final String attributeName) {
         final Vector<String> vector = new Vector<String>(valuesToFilter.length);
         for (final String attributeValue : valuesToFilter) {
@@ -165,35 +129,8 @@ public final class RegisteredServiceRegexAttributeFilter implements AttributeFil
         return vector.toArray(new String[] {});
     }
 
-    /**
-     * Logs the released attribute entry.
-     *
-     * @param attributeName the attribute name
-     * @param attributeValue the attribute value
-     */
     private void logReleasedAttributeEntry(final String attributeName, final String attributeValue) {
         logger.debug("The attribute value [{}] for attribute name {} matches the pattern {}. Releasing attribute...",
                 attributeValue, attributeName, this.pattern.pattern());
     }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 83).append(this.pattern).toHashCode();
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
-        final RegisteredServiceRegexAttributeFilter rhs = (RegisteredServiceRegexAttributeFilter) obj;
-        return new EqualsBuilder().append(this.pattern.pattern(), rhs.getPattern().pattern()).isEquals();
-    }
-    
 }

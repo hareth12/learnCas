@@ -44,23 +44,17 @@ public final class DefaultPasswordEncoder implements PasswordEncoder {
 
     private String characterEncoding;
 
-    /**
-     * Instantiates a new default password encoder.
-     *
-     * @param encodingAlgorithm the encoding algorithm
-     */
     public DefaultPasswordEncoder(final String encodingAlgorithm) {
         this.encodingAlgorithm = encodingAlgorithm;
     }
 
-    @Override
     public String encode(final String password) {
         if (password == null) {
             return null;
         }
 
         try {
-            final MessageDigest messageDigest = MessageDigest
+            MessageDigest messageDigest = MessageDigest
                 .getInstance(this.encodingAlgorithm);
 
             if (StringUtils.hasText(this.characterEncoding)) {

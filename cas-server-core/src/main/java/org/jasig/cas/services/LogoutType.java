@@ -26,10 +26,6 @@ package org.jasig.cas.services;
  */
 public enum LogoutType {
     /**
-    * For no SLO.
-    */
-    NONE,
-    /**
      * For back channel SLO.
      */
     BACK_CHANNEL,

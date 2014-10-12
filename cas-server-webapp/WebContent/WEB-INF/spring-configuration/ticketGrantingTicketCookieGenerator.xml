@@ -32,5 +32,4 @@
 		p:cookieMaxAge="-1"
 		p:cookieName="CASTGC"
 		p:cookiePath="/cas" />
-		<!-- lwk update1(用http验证) update  p:cookieSecure="false" -->
 </beans>

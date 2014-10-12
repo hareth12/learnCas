@@ -28,7 +28,6 @@ package org.jasig.cas.authentication.handler;
  */
 public final class PlainTextPasswordEncoder implements PasswordEncoder {
 
-    @Override
     public String encode(final String password) {
         return password;
     }

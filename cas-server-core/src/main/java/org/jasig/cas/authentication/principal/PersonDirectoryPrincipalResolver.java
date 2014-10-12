@@ -53,7 +53,7 @@ public class PersonDirectoryPrincipalResolver implements PrincipalResolver {
     @NotNull
     private IPersonAttributeDao attributeRepository = new StubPersonAttributeDao(new HashMap<String, List<Object>>());
 
-    /** Optional principal attribute name. */
+    /** Optional prinicpal attribute name. */
     private String principalAttributeName;
 
     @Override

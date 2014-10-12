@@ -109,7 +109,7 @@ public class UsernamePasswordCredential implements Credential, Serializable {
             return false;
         }
 
-        final UsernamePasswordCredential that = (UsernamePasswordCredential) o;
+        UsernamePasswordCredential that = (UsernamePasswordCredential) o;
 
         if (password != null ? !password.equals(that.password) : that.password != null) {
             return false;

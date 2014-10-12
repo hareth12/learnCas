@@ -18,6 +18,8 @@
  */
 package org.jasig.cas.ticket.support;
 
+import java.io.Serializable;
+
 import org.jasig.cas.authentication.RememberMeCredential;
 import org.jasig.cas.ticket.ExpirationPolicy;
 import org.jasig.cas.ticket.TicketState;
@@ -32,7 +34,7 @@ import javax.validation.constraints.NotNull;
  * @since 3.2.1
  *
  */
-public final class RememberMeDelegatingExpirationPolicy implements ExpirationPolicy {
+public final class RememberMeDelegatingExpirationPolicy implements ExpirationPolicy, Serializable {
 
     /** Serialization support. */
     private static final long serialVersionUID = -2735975347698196127L;
@@ -43,7 +45,6 @@ public final class RememberMeDelegatingExpirationPolicy implements ExpirationPol
     @NotNull
     private ExpirationPolicy sessionExpirationPolicy;
 
-    @Override
     public boolean isExpired(final TicketState ticketState) {
         final Boolean b = (Boolean) ticketState.getAuthentication().getAttributes().
                 get(RememberMeCredential.AUTHENTICATION_ATTRIBUTE_REMEMBER_ME);

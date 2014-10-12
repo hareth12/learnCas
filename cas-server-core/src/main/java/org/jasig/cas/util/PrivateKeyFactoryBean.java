@@ -43,7 +43,6 @@ public final class PrivateKeyFactoryBean extends AbstractFactoryBean {
     @NotNull
     private String algorithm;
 
-    @Override
     protected Object createInstance() throws Exception {
         final InputStream privKey = this.location.getInputStream();
         try {
@@ -51,7 +50,7 @@ public final class PrivateKeyFactoryBean extends AbstractFactoryBean {
             privKey.read(bytes);
             privKey.close();
             final PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(bytes);
-            final KeyFactory factory = KeyFactory.getInstance(this.algorithm);
+            KeyFactory factory = KeyFactory.getInstance(this.algorithm);
             return factory.generatePrivate(privSpec);
         } finally {
             privKey.close();

@@ -42,7 +42,6 @@ public class PublicKeyFactoryBean extends AbstractFactoryBean {
     @NotNull
     private String algorithm;
 
-    @Override
     protected final Object createInstance() throws Exception {
         final InputStream pubKey = this.resource.getInputStream();
         try {

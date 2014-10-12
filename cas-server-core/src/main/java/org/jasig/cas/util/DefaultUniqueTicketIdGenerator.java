@@ -105,7 +105,6 @@ public final class DefaultUniqueTicketIdGenerator implements
         }
     }
 
-    @Override
     public String getNewTicketId(final String prefix) {
         final String number = this.numericGenerator.getNextNumberAsString();
         final StringBuilder buffer = new StringBuilder(prefix.length() + 2
