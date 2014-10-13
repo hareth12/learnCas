@@ -340,6 +340,12 @@
     </dependencies>
   </dependencyManagement>
 
+<modules>
+   <module>cas-server-core</module> 
+   <module>cas-server-support-generic</module> 
+   <module>cas-server-webapp</module> 
+   <module>cas-server-webapp-support</module> 
+</modules>
 
   <properties>
     <cs.dir>${project.basedir}</cs.dir>
